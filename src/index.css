@@ -4,12 +4,12 @@
 
 @layer components{
   #todo-box{
-    scrollbar-gutter: stable both-edges;
+    scrollbar-gutter: both-edges stable;
   }
   #todo-box::-webkit-scrollbar{
-    @apply w-2;
+    @apply w-2 absolute right-0;
   }
   #todo-box::-webkit-scrollbar-thumb{
-    @apply bg-gradient-to-b from-cyan-200 to-cyan-400  rounded shadow-lg;
-  }
+    @apply bg-cyan-400 rounded bg-opacity-50;
+  } 
 }
