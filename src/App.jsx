@@ -3,6 +3,7 @@ import { ImBin, ImCheckmark, ImCheckmark2 } from "react-icons/im";
 
 const App = () => {
 
+  // Event handlers / States
   const [input, setInput] = useState('')
   const [todos, setTodos] = useState([])
 
@@ -52,45 +53,125 @@ const App = () => {
     })
   }
 
-  return (
-    <div className="w-screen h-screen flex justify-center items-center bg-gradient-to-br from-cyan-100 via-cyan-300 to-amber-200 outline-none font-serif">
-      <div className='w-full md:w-1/2 mx-10 h-3/4 bg-slate-200 bg-opacity-10 backdrop-blur-2xl ring-1 ring-cyan-200 rounded-lg shadow-xl break-words text-cyan-900'>
+  // Tailwind CSS Modules
+  const style = {
+    theme:{
+      bgBody:'bg-gradient-to-br from-cyan-100 via-cyan-300 to-amber-200',
+      bgCard:'bg-slate-200 bg-opacity-10 backdrop-blur-2xl',
+    },
+    flex:{
+      col:'flex flex-col',
+      row:'flex flex-row',
+      center:'justify-center items-center'
+    },
+    body:'w-screen h-screen outline-none font-serif',
+    card:'w-full md:w-1/2 mx-10 h-3/4 ring-1 ring-cyan-200 rounded-lg shadow-xl break-words text-cyan-900',
+    head:{
+      color:{
+        add:'bg-cyan-400',
+        clear:'bg-rose-500 text-rose-50',
+      },
+      input:'w-full h-10 shadow-inner rounded-lg px-4 outline-none caret-cyan-400 font-sans',
+      button:'bg-opacity-60 drop-shadow-lg box-border w-1/2 h-10 m-4 rounded outline-none brightness-100 hover:brightness-125 transition text-lg font-sans',
+    },
+    todobox:'overflow-y-auto h-3/4 flex flex-col items-center snap-y'
+  }
 
-        <div className='flex flex-col justify-around'>
-          <input type="text" id="input" onChange={e => handleChange(e)}className="w-full h-10 shadow-inner rounded-lg px-4 outline-none caret-cyan-400 font-sans"/>
-          <div className='flex justify-evenly text-lg font-sans'>
-            <button id='addbtn' onClick={() => handleAdd()} className="bg-cyan-400 bg-opacity-60 drop-shadow-lg box-border w-1/2 h-10 m-4 rounded outline-none brightness-100 hover:brightness-125 transition">Add Todo</button> 
-            <button onClick={() => handleClear()} className="bg-rose-500 bg-opacity-60 drop-shadow-lg box-border w-1/2 h-10 m-4 rounded outline-none brightness-100 hover:brightness-125 transition text-rose-50">Clear All</button> 
+  return (
+    <div className=
+    {`
+      ${style.body} 
+      ${style.flex.col}
+      ${style.flex.center}  
+      ${style.theme.bgBody}
+    `}>
+
+      <div className={`
+        ${style.card}
+        ${style.theme.bgCard}
+      `}>
+
+        <div className={style.flex.col}>
+
+          <input type="text" id="input" 
+          onChange={e => handleChange(e)} 
+          className={style.head.input}/>
+
+          <div className={`${style.flex.row}`}>
+
+            <button id='addbtn' 
+            onClick={() => handleAdd()} 
+            className={`
+            ${style.head.button}
+            ${style.head.color.add}
+            `}>
+              Add Todo
+            </button> 
+
+            <button 
+            onClick={() => handleClear()} 
+            className={`
+            ${style.head.button}
+            ${style.head.color.clear}
+            `}>
+              Clear All
+            </button> 
+
           </div>
+
         </div>
         
-        <div id='todo-box' className='overflow-y-auto h-3/4 flex flex-col items-center snap-y'>
+        <div id='todo-box' 
+        className={style.todobox}>
 
             {todos.map((todo) => {
 
               todo.id = crypto.randomUUID()
-      
+              
+              // Local style
               const style = {
-                item:{
-                  pending:'flex gap-6 justify-between items-center w-5/6 px-10 py-4 my-4 bg-opacity-40 rounded shadow-md snap-start bg-cyan-500',
-                  completed:'flex gap-6 justify-between items-center w-5/6 px-10 py-4 my-4 bg-opacity-20 rounded shadow-md snap-start bg-emerald-200'
+                color:{
+                  pending:'bg-cyan-500 bg-opacity-40',
+                  complete:'bg-emerald-200 bg-opacity-20 ',
+                  completeText:'text-emerald-600',
                 },
-                text:{
-                  pending:'text-xl w-2/3 font-serif tracking-wide',
-                  completed:'text-xl w-2/3 font-serif tracking-wide text-emerald-600 '
-                }
+                item:'flex gap-6 justify-between items-center w-5/6 px-10 py-4 my-4  rounded shadow-md snap-start',
+                text:'text-xl w-2/3 font-serif tracking-wide'
               }
 
               return(
-                <div key={todo.id} className={todo.complete ? style.item.completed : style.item.pending}>
-                  <span className={todo.complete ? style.text.completed : style.text.pending}>{todo.todo}</span>
-                  <span className='flex gap-4 text-2xl'>
-                    <button className='outline-none' onClick={() => handleComplete(todo.id)}>
-                      {todo.complete? <ImCheckmark className='text-emerald-600'/> : <ImCheckmark2 />}
+                <div key={todo.id} 
+                className={`
+                ${style.item} 
+                ${todo.complete 
+                ? style.color.complete 
+                : style.color.pending}`}>
+
+                  <span 
+                  className={`
+                  ${style.text}
+                  ${todo.complete && style.color.completeText}`}>
+                    {todo.todo}
+                  </span>
+
+                    <span className='flex gap-4 text-2xl'>
+
+                    <button 
+                    className='outline-none' 
+                    onClick={() => handleComplete(todo.id)}>
+                      {
+                      todo.complete
+                      ? <ImCheckmark className='text-emerald-600'/> 
+                      : <ImCheckmark2 />
+                      }
                     </button>
-                    <button className='outline-none' onClick={() => handleDelete(todo.id)}>
+
+                    <button 
+                    className='outline-none' 
+                    onClick={() => handleDelete(todo.id)}>
                       <ImBin className='hover:text-rose-500 transition'/>
                     </button>
+
                   </span>
                 </div>
               )
